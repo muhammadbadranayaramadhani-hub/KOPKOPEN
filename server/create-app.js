@@ -1,6 +1,4 @@
 import express from 'express';
-import { loadEnvFile, loadConfig } from './config.js';
-import { createGroq } from './services/groq.js';
 import { securityHeaders, cors } from './middleware/security.js';
 import { createRateLimiter } from './middleware/rateLimiter.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
@@ -13,13 +11,18 @@ import { runGenerateChallenge } from './routes/challenge.js';
 
 export function createApp({ ai, config }) {
   const app = express();
+
   app.disable('x-powered-by');
-  if (config.trustProxy) app.set('trust proxy', 1);
+
+  if (config.trustProxy) {
+    app.set('trust proxy', 1);
+  }
+
   app.use(securityHeaders);
   app.use(cors(config.allowedOrigins));
   app.use(express.json({ limit: '32kb' }));
 
-  app.get('/api/health', (req, res) =>
+  app.get('/api/health', (req, res) => {
     res.json({
       success: true,
       data: {
@@ -30,10 +33,11 @@ export function createApp({ ai, config }) {
         }
       },
       error: null
-    })
-  );
+    });
+  });
 
   const router = express.Router();
+
   router.use(createRateLimiter({
     max: config.rateLimitPerMin,
     name: 'umum'
@@ -56,11 +60,3 @@ export function createApp({ ai, config }) {
 
   return app;
 }
-
-loadEnvFile();
-const config = loadConfig();
-const ai = createGroq(config);
-
-const app = createApp({ ai, config });
-
-export default app;
