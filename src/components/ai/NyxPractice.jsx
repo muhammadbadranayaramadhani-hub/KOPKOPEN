@@ -4,12 +4,9 @@ import MathText from '../MathText.jsx';
 import LearnerPicker from './LearnerPicker.jsx';
 import { ai, friendlyError } from '../../services/aiClient.js';
 import { STATUS_LABEL } from './useAiStatus.js';
+import { matchesNumericAnswer } from '../../engines/PuzzleEngine.js';
 import { normalizeLearner, findSubject, findGrade, findDifficulty } from '../../data/curriculum.js';
 
-const parseNum = (raw) => {
-  const s = String(raw).trim().replace(/\s+/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
-  return /^-?\d+(\.\d+)?$/.test(s) ? Number(s) : NaN;
-};
 
 // NYX: latihan SMA yang dibuat AI sesuai profil belajar. Tidak mengubah bukti, cerita, atau poin kasus resmi.
 // ASTRA menilai alasan siswa (opsional) setelah jawaban diperiksa.
@@ -40,7 +37,7 @@ export default function NyxPractice({ status, onRecheck, learner, onLearner }) {
 
   function check() {
     if (!item) return;
-    const correct = item.type === 'mc' ? Number(value) === item.correctIndex : Math.abs(parseNum(value) - item.answer) < 1e-6;
+    const correct = item.type === 'mc' ? Number(value) === item.correctIndex : matchesNumericAnswer(value, item.answer);
     setResult({ correct });
   }
 

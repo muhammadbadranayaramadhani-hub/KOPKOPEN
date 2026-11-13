@@ -71,7 +71,8 @@ export function sanitizeHistory(value) {
   if (!Array.isArray(value)) throw invalid('Riwayat percakapan harus berupa daftar.');
   const items = value.slice(-LIMITS.historyItems).map((it) => {
     if (!isPlainObject(it) || !['user', 'model'].includes(it.role)) throw invalid('Format riwayat percakapan tidak valid.');
-    const text = cleanText(String(it.text ?? '').slice(0, LIMITS.historyText + 50), { field: 'Riwayat', max: LIMITS.historyText, allowEmpty: true });
+    // Balasan AI bisa lebih panjang dari batas; potong saja (jangan tolak) agar percakapan tidak macet.
+    const text = cleanText(String(it.text ?? '').slice(0, LIMITS.historyText), { field: 'Riwayat', max: LIMITS.historyText, allowEmpty: true });
     return { role: it.role, text };
   }).filter((it) => it.text);
   while (items.length && items[0].role !== 'user') items.shift();

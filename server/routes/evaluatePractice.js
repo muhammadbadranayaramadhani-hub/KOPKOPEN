@@ -3,7 +3,7 @@ import { requireBody, oneOf, cleanText, escapeForPrompt, parseJsonLoose, scoreFi
 import { requireAi } from '../services/guard.js';
 import { sanitizeLearner, learnerContext } from '../services/learner.js';
 import { astraPracticeSystem, ASTRA_PRACTICE_SCHEMA } from '../prompts/astraPrompt.js';
-import { parseNumber } from '../../src/engines/PuzzleEngine.js';
+import { parseNumberAlternatives, matchesNumericAnswer } from '../../src/engines/PuzzleEngine.js';
 
 // ASTRA untuk latihan NYX. Benar/salah ditentukan kode; AI menilai alasan dengan rubrik.
 // Catatan: soal dikirim klien (latihan tidak memengaruhi progres kasus), jadi kunci dihitung ulang dari ekspresi bila ada.
@@ -36,9 +36,8 @@ export async function runEvaluatePractice(b, { ai }) {
       if (typeof c.answer === 'number' && !approxEqual(key, c.answer, 1e-6)) throw invalid('Kunci jawaban tidak konsisten.');
     }
     if (typeof key !== 'number' || !Number.isFinite(key)) throw invalid('Kunci jawaban numerik tidak valid.');
-    const n = parseNumber(String(b.studentAnswer ?? ''));
-    if (!Number.isFinite(n)) throw invalid('Jawaban harus berupa angka.');
-    correct = approxEqual(n, key, 1e-6);
+    if (!parseNumberAlternatives(String(b.studentAnswer ?? '')).length) throw invalid('Jawaban harus berupa angka.');
+    correct = matchesNumericAnswer(String(b.studentAnswer ?? ''), key);
     keyText = String(key) + (c.unit ? ` ${String(c.unit).slice(0, 20)}` : '');
     answerText = String(b.studentAnswer).slice(0, 40);
   }

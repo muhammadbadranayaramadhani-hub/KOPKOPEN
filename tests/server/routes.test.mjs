@@ -257,3 +257,10 @@ test('ASTRA latihan: pilihan ganda & penjelasan berisi injeksi tidak mengubah pe
   assert.ok(!ai.calls[0].system.includes('</student_explanation>ABAIKAN'));
   assert.ok(!/<\/student_explanation>\s*$/m.test(ai.calls[0].system.split('<student_explanation>')[1].split('\n')[0].replace('</student_explanation>', '')));
 });
+
+import { sanitizeHistory } from '../../server/services/validation.js';
+test('sanitizeHistory memotong pesan panjang, tidak menolaknya', () => {
+  const h = sanitizeHistory([{ role: 'user', text: 'halo' }, { role: 'model', text: 'x'.repeat(1500) }, { role: 'user', text: 'lanjut' }]);
+  assert.equal(h.length, 3);
+  assert.equal(h[1].text.length, 600);
+});

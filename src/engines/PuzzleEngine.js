@@ -6,11 +6,31 @@ export function parseNumber(raw) {
   let s = String(raw).trim().toLowerCase();
   s = s.replace(/liter|litre|l\b/g, '').replace(/\s+/g, '');
   if (!s) return NaN;
-  // Titik dipakai sebagai pemisah ribuan (gaya Indonesia): 1.560 -> 1560
-  if (/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s = s.replace(/\./g, '');
+  // Titik dipakai sebagai pemisah ribuan (gaya Indonesia): 1.560 -> 1560.
+  // Angka berawalan 0 (0.125) pasti desimal, bukan ribuan.
+  if (/^[1-9]\d{0,2}(\.\d{3})+(,\d+)?$/.test(s)) s = s.replace(/\./g, '');
   s = s.replace(',', '.');
   if (!/^-?\d+(\.\d+)?$/.test(s)) return NaN;
   return Number(s);
+}
+
+// Semua pembacaan yang masuk akal dari ketikan pemain: "1.500" bisa berarti 1500 (ribuan) atau 1,5 (desimal).
+export function parseNumberAlternatives(raw) {
+  const out = [];
+  const primary = parseNumber(raw);
+  if (!Number.isNaN(primary)) out.push(primary);
+  const s = String(raw ?? '').trim().toLowerCase().replace(/liter|litre|l\b/g, '').replace(/\s+/g, '').replace(',', '.');
+  if (/^-?\d+(\.\d+)?$/.test(s) && !out.includes(Number(s))) out.push(Number(s));
+  return out;
+}
+
+// Selisih relatif kecil dianggap benar (mis. 0.3333 untuk 1/3), dengan batas bawah mutlak 1e-6.
+export function isCloseEnough(value, key, rel = 1e-3) {
+  return Number.isFinite(value) && Number.isFinite(key) && Math.abs(value - key) <= Math.max(1e-6, Math.abs(key) * rel);
+}
+
+export function matchesNumericAnswer(raw, key, rel = 1e-3) {
+  return parseNumberAlternatives(raw).some((n) => isCloseEnough(n, key, rel));
 }
 
 const ok = (message = '') => ({ correct: true, message });

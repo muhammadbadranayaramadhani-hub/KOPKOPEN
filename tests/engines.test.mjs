@@ -289,3 +289,15 @@ test('hotspot: setiap objek punya interaksi yang valid', () => {
   const viaStory = ['E5'];
   for (const id of C.evidenceOrder) assert.ok(evidenceSources.includes(id) || viaStory.includes(id), `${id} tak bisa didapat`);
 });
+
+test('parseNumber: desimal berawalan 0 bukan ribuan; toleransi relatif', () => {
+  assert.equal(Puzzle.parseNumber('0.125'), 0.125);
+  assert.equal(Puzzle.parseNumber('0,125'), 0.125);
+  assert.equal(Puzzle.parseNumber('1.500'), 1500);
+  assert.equal(Puzzle.parseNumber('3.14'), 3.14);
+  assert.deepEqual(Puzzle.parseNumberAlternatives('1.500'), [1500, 1.5]);
+  assert.ok(Puzzle.matchesNumericAnswer('1.500', 1.5));
+  assert.ok(Puzzle.matchesNumericAnswer('0.3333', 1 / 3));
+  assert.ok(!Puzzle.matchesNumericAnswer('0.34', 1 / 3));
+  assert.ok(Puzzle.matchesNumericAnswer('0.125', 0.125));
+});
