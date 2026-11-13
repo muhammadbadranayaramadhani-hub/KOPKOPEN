@@ -9,8 +9,8 @@
     "node": ">=18.18"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js"
+    "start": "node dev.js",
+    "dev": "node --watch dev.js"
   },
   "dependencies": {
     "express": "^4.21.2",
