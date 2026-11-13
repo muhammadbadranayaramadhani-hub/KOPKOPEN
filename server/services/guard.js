@@ -20,6 +20,6 @@ export async function generateGuarded({ ai, build, check, safeReply, attempts = 
 
 export function requireAi(ai) {
   if (!ai || !ai.isConfigured) {
-    throw new AppError('AI_NOT_CONFIGURED', 'Layanan AI belum dikonfigurasi di server (GEMINI_API_KEY belum diisi).', 503);
+    throw new AppError('AI_NOT_CONFIGURED', 'Layanan AI belum dikonfigurasi di server (GROQ_API_KEY belum diisi).', 503);
   }
 }
