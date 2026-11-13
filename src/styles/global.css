@@ -370,6 +370,10 @@ li:nth-child(even) > .pin-card { transform: rotate(.7deg); }
 .wrong-flag { display: inline-flex; align-items: center; gap: .25rem; margin-left: .5rem; font-size: .78rem; color: #7a2338; }
 .classify-opts { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0 0; }
 .radio.chip { margin: 0; padding: .4rem .7rem; align-items: center; flex: 1 1 130px; }
+/* Pilihan kategori (classify) memakai class "chip" yang sama dengan lencana gelap (.chip); kembalikan ke gaya kertas agar terbaca. */
+.radio.chip { color: var(--ink); background: rgba(255, 255, 255, .55); border: 1.5px solid rgba(34, 36, 61, .45); font-size: .95rem; font-weight: 600; }
+.radio.chip:hover { border-color: var(--midnight); background: rgba(255, 255, 255, .8); }
+.radio.chip.is-checked { color: var(--ink); background: rgba(217, 173, 117, .4); border-color: #7a5a2c; box-shadow: inset 4px 0 0 #7a5a2c; }
 .hint-list { display: grid; gap: .4rem; margin-top: .8rem; }
 .hint-list li { display: flex; gap: .5rem; padding: .5rem .7rem; background: rgba(217, 173, 117, .25); border-left: 4px solid #7a5a2c; }
 .explain-block { margin: .8rem 0; padding: .7rem .9rem; background: rgba(34, 36, 61, .06); border-left: 4px solid var(--lavender); }
@@ -487,3 +491,20 @@ li:nth-child(even) > .pin-card { transform: rotate(.7deg); }
   :root[data-motion='auto'] *, :root[data-motion='auto'] *::before, :root[data-motion='auto'] *::after { animation: none !important; transition: none !important; }
   :root[data-motion='auto'] .scene-fog { opacity: .8; }
 }
+
+/* ---------- Rumus matematika (MathText) ---------- */
+:root { --font-math: 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', Georgia, serif; }
+.math { font-family: var(--font-math); font-weight: 500; letter-spacing: .01em; }
+.math .mv { font-style: italic; }
+.math sup, .math sub { font-size: .72em; line-height: 0; }
+.math-display {
+  display: block; margin: .7rem 0; padding: .7rem 1rem; text-align: center;
+  font-size: 1.4em; line-height: 1.5; overflow-x: auto; overflow-y: hidden;
+  background: rgba(34, 36, 61, .06); border-left: 4px solid var(--lavender);
+}
+.mfrac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 .2em; text-align: center; line-height: 1.25; }
+.mnum { padding: 0 .3em .1em; border-bottom: 1.5px solid currentColor; }
+.mden { padding: .1em .3em 0; }
+.msqrt { display: inline-block; white-space: nowrap; }
+.mradicand { display: inline-block; border-top: 1.5px solid currentColor; padding: 0 .12em 0 .08em; line-height: 1.15; }
+@media (max-width: 520px) { .math-display { font-size: 1.2em; padding: .55rem .6rem; } }

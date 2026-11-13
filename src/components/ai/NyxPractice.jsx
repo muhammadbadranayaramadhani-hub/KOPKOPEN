@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Icon } from '../ui.jsx';
+import MathText from '../MathText.jsx';
 import LearnerPicker from './LearnerPicker.jsx';
 import { ai, friendlyError } from '../../services/aiClient.js';
 import { STATUS_LABEL } from './useAiStatus.js';
@@ -79,13 +80,13 @@ export default function NyxPractice({ status, onRecheck, learner, onLearner }) {
       {item && !busy && (
         <div className="nyx-item">
           <p className="ch-subject">{subj.label} · {findGrade(item.grade).label} · {findDifficulty(item.difficulty).label} · {item.topic}</p>
-          <p className="question">{item.question}</p>
+          <p className="question"><MathText>{item.question}</MathText></p>
           {item.type === 'mc' ? (
             <fieldset className="choice-set" disabled={!!result}>
               <legend className="sr-only">Pilih satu jawaban</legend>
               {item.options.map((o, i) => (
                 <label key={i} className={`radio ${String(value) === String(i) ? 'is-checked' : ''}`}>
-                  <input type="radio" name="nyx" checked={String(value) === String(i)} onChange={() => setValue(String(i))} /><span>{o}</span>
+                  <input type="radio" name="nyx" checked={String(value) === String(i)} onChange={() => setValue(String(i))} /><span><MathText>{o}</MathText></span>
                 </label>
               ))}
             </fieldset>
@@ -96,11 +97,11 @@ export default function NyxPractice({ status, onRecheck, learner, onLearner }) {
               {item.unit && <span className="unit">{item.unit}</span>}
             </div>
           )}
-          {shownHint && <p className="hint-list"><Icon name="Lightbulb" size={16} /> {item.hint}</p>}
+          {shownHint && <p className="hint-list"><Icon name="Lightbulb" size={16} /> <MathText>{item.hint}</MathText></p>}
           {result && (
             <div className={`feedback ${result.correct ? 'is-good' : 'is-bad'}`} role="status">
               <Icon name={result.correct ? 'CircleCheck' : 'CircleX'} size={20} />
-              <div><strong>{result.correct ? 'Tepat!' : 'Belum tepat'}</strong><p>{item.explanation}</p></div>
+              <div><strong>{result.correct ? 'Tepat!' : 'Belum tepat'}</strong><p><MathText>{item.explanation}</MathText></p></div>
             </div>
           )}
           <div className="btn-row">
@@ -116,8 +117,8 @@ export default function NyxPractice({ status, onRecheck, learner, onLearner }) {
               {astra.data && (
                 <div className="astra-practice-result" role="status">
                   <p><strong>Penalaran {astra.data.reasoningScore}/100 · Konsep {astra.data.conceptScore}/100</strong>{!astra.data.hadExplanation && ' (tanpa alasan tertulis, penilaian terbatas)'}</p>
-                  <p>{astra.data.whyCorrectOrNot}</p>
-                  <p>{astra.data.feedback}</p>
+                  <p><MathText>{astra.data.whyCorrectOrNot}</MathText></p>
+                  <p><MathText>{astra.data.feedback}</MathText></p>
                   {astra.data.misconceptions.length > 0 && <ul>{astra.data.misconceptions.map((m, i) => <li key={i}>{m}</li>)}</ul>}
                   <p className="muted">Saran: {astra.data.nextStep}</p>
                 </div>

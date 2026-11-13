@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '../ui.jsx';
+import MathText from '../MathText.jsx';
 import { friendlyError } from '../../services/aiClient.js';
+import { loadChat, saveChat } from '../../services/chatStore.js';
 
 // Percakapan generik yang dipakai RENNTZY dan REI: daftar pesan, kotak input, status memuat, galat + coba lagi.
 // `send(text, history)` harus mengembalikan Promise<string>.
-export default function AiChat({ send, placeholder, intro, disabled, suggestions = [], idPrefix, maxLength = 400, onReply, userLabel = 'Kamu', botLabel }) {
-  const [messages, setMessages] = useState([]);
+export default function AiChat({ send, placeholder, intro, disabled, suggestions = [], idPrefix, maxLength = 400, onReply, userLabel = 'Kamu', botLabel, storageKey }) {
+  // Bila storageKey diberikan, riwayat disimpan di luar komponen sehingga tetap ada setelah panel ditutup lalu dibuka lagi.
+  const [messages, setMessages] = useState(() => loadChat(storageKey));
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const lastRef = useRef(null);
   const endRef = useRef(null);
+
+  useEffect(() => { if (storageKey) saveChat(storageKey, messages); }, [storageKey, messages]);
 
   useEffect(() => { if (endRef.current && endRef.current.scrollIntoView) endRef.current.scrollIntoView({ block: 'nearest' }); }, [messages, busy, error]);
 
@@ -53,7 +58,7 @@ export default function AiChat({ send, placeholder, intro, disabled, suggestions
         {messages.map((m, i) => (
           <div key={i} className={`ai-msg ${m.role === 'user' ? 'is-user' : 'is-bot'}`}>
             <span className="ai-who">{m.role === 'user' ? userLabel : botLabel}</span>
-            <p>{m.text}</p>
+            <p><MathText>{m.text}</MathText></p>
             {m.meta && m.meta.note && <span className="ai-note">{m.meta.note}</span>}
           </div>
         ))}

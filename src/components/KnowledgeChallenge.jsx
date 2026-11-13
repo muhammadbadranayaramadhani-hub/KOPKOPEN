@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Icon, DataTable, SUBJECT_LABEL } from './ui.jsx';
+import MathText from './MathText.jsx';
 import { evaluateStep, revealAnswerText } from '../engines/PuzzleEngine.js';
 import { challengeStatus } from '../engines/InvestigationEngine.js';
 import NopalTutor from './ai/NopalTutor.jsx';
@@ -64,7 +65,7 @@ function AnswerInput({ step, value, onChange, onSubmit, wrongIds }) {
           {step.options.map((o) => (
             <label key={o.id} className={`radio ${value === o.id ? 'is-checked' : ''}`}>
               <input type="radio" name="mc" value={o.id} checked={value === o.id} onChange={() => onChange(o.id)} />
-              <span>{o.text}</span>
+              <span><MathText>{o.text}</MathText></span>
             </label>
           ))}
         </fieldset>
@@ -78,7 +79,7 @@ function AnswerInput({ step, value, onChange, onSubmit, wrongIds }) {
           {step.options.map((o) => (
             <label key={o.id} className={`radio check ${cur.includes(o.id) ? 'is-checked' : ''}`}>
               <input type="checkbox" checked={cur.includes(o.id)} onChange={() => toggle(o.id)} />
-              <span>{o.text}</span>
+              <span><MathText>{o.text}</MathText></span>
             </label>
           ))}
         </fieldset>
@@ -91,7 +92,7 @@ function AnswerInput({ step, value, onChange, onSubmit, wrongIds }) {
           {step.items.map((it, i) => (
             <li key={it.id} className={wrongIds && wrongIds.includes(it.id) ? 'is-wrong' : ''}>
               <p className="classify-text">
-                <span className="classify-num">{i + 1}</span> {it.text}
+                <span className="classify-num">{i + 1}</span> <MathText>{it.text}</MathText>
                 {wrongIds && wrongIds.includes(it.id) && <span className="wrong-flag"><Icon name="CircleX" size={14} /> perlu dicek ulang</span>}
               </p>
               <fieldset className="classify-opts">
@@ -133,9 +134,9 @@ export default function KnowledgeChallenge({ caseDef, cs, challenge, actions, on
         <h2 id="chal-title" className="ev-title"><Icon name="CircleCheck" size={22} /> {challenge.title} — selesai</h2>
         {challenge.steps.map((s) => (
           <div key={s.id} className="explain-block">
-            <p className="explain-q">{s.prompt}</p>
-            <p><strong>Konsep:</strong> {s.explain}</p>
-            <p><strong>Kaitan dengan kasus:</strong> {s.link}</p>
+            <p className="explain-q"><MathText>{s.prompt}</MathText></p>
+            <p><strong>Konsep:</strong> <MathText>{s.explain}</MathText></p>
+            <p><strong>Kaitan dengan kasus:</strong> <MathText>{s.link}</MathText></p>
           </div>
         ))}
         <button type="button" className="btn btn-primary" onClick={onBack}>Kembali ke penyelidikan</button>
@@ -187,14 +188,14 @@ export default function KnowledgeChallenge({ caseDef, cs, challenge, actions, on
         <h2 id="chal-title" className="ev-title">
           <Icon name="CircleCheck" size={22} /> {s.revealed ? 'Jawaban diperlihatkan' : 'Tepat!'}
         </h2>
-        {s.revealed && <p className="reveal-text">{revealText}</p>}
+        {s.revealed && <p className="reveal-text"><MathText>{revealText}</MathText></p>}
         <div className="explain-block">
           <h3 className="mini-title">Konsep di balik jawabannya</h3>
-          <p>{step.explain}</p>
+          <p><MathText>{step.explain}</MathText></p>
         </div>
         <div className="explain-block link-block">
           <h3 className="mini-title">Kaitannya dengan kasus</h3>
-          <p>{step.link}</p>
+          <p><MathText>{step.link}</MathText></p>
           {isLast && challenge.unlocksText && <p className="discovery"><Icon name="Sparkles" size={16} /> {challenge.unlocksText}</p>}
         </div>
         <p className="points-note"><Icon name="Star" size={16} /> +{s.points} poin pengetahuan</p>
@@ -212,9 +213,9 @@ export default function KnowledgeChallenge({ caseDef, cs, challenge, actions, on
       </button>
       <p className="ch-subject">{SUBJECT_LABEL[challenge.subject]} · Langkah {idx + 1}/{challenge.steps.length}</p>
       <h2 id="chal-title" className="ev-title"><Icon name={challenge.icon} size={22} /> {challenge.title}</h2>
-      <p className="scenario">{challenge.scenario}</p>
+      <p className="scenario"><MathText>{challenge.scenario}</MathText></p>
 
-      {step.quote && <blockquote className="doc-quote">“{step.quote}”</blockquote>}
+      {step.quote && <blockquote className="doc-quote">“<MathText>{step.quote}</MathText>”</blockquote>}
       {step.table && (
         <>
           <p className="mini-title">{ev ? `${ev.code} — ${ev.title}` : 'Data'}</p>
@@ -222,7 +223,7 @@ export default function KnowledgeChallenge({ caseDef, cs, challenge, actions, on
         </>
       )}
 
-      <p className="question">{step.prompt}</p>
+      <p className="question"><MathText>{step.prompt}</MathText></p>
       <AnswerInput step={step} value={answer} onChange={(v) => { setAnswer(v); setFeedback(null); }} onSubmit={submit} wrongIds={feedback && feedback.wrongIds} />
 
       {feedback && (
@@ -230,7 +231,7 @@ export default function KnowledgeChallenge({ caseDef, cs, challenge, actions, on
           <Icon name={feedback.soft ? 'Info' : 'CircleX'} size={20} />
           <div>
             <strong>{feedback.soft ? 'Satu langkah lagi' : 'Belum tepat'}</strong>
-            <p>{feedback.message}</p>
+            <p><MathText>{feedback.message}</MathText></p>
           </div>
         </div>
       )}
@@ -238,7 +239,7 @@ export default function KnowledgeChallenge({ caseDef, cs, challenge, actions, on
       {hintsShown > 0 && (
         <ol className="hint-list" aria-label="Petunjuk">
           {step.hints.slice(0, hintsShown).map((h, i) => (
-            <li key={i}><Icon name="Lightbulb" size={16} /> <span><strong>Petunjuk {i + 1}:</strong> {h}</span></li>
+            <li key={i}><Icon name="Lightbulb" size={16} /> <span><strong>Petunjuk {i + 1}:</strong> <MathText>{h}</MathText></span></li>
           ))}
         </ol>
       )}

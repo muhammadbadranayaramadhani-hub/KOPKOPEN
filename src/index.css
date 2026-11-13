@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #22243D;
+  --color-lavender: #7776A8;
+  --color-mist: #A9B8DF;
+  --color-dream: #E7DDF5;
+  --color-paper: #F4EEDC;
+  --color-dustrose: #C8A9C8;
+  --color-sage: #91B9B4;
+  --color-antiquegold: #D9AD75;
+
+  --font-cinzel: 'Cinzel', serif;
+  --font-nunito: 'Nunito Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+body {
+  font-family: var(--font-nunito);
+  background-color: #22243D;
+  color: #F4EEDC;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .font-serif-title {
+  font-family: var(--font-cinzel);
+}
+
+.font-data {
+  font-family: var(--font-mono);
+}
+
+/* Custom scrollbars matching Dream Archive theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(34, 36, 61, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(119, 118, 168, 0.5);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 173, 117, 0.7);
+}

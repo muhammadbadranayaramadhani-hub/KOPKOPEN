@@ -26,6 +26,7 @@ import * as Inv from './engines/InvestigationEngine.js';
 import * as Ev from './engines/EvidenceEngine.js';
 import * as Puzzle from './engines/PuzzleEngine.js';
 import * as Progress from './engines/ProgressEngine.js';
+import { clearChats } from './services/chatStore.js';
 
 /* ------------------------------------------------------------------ */
 /* Fungsi murni untuk alur cerita (state -> state)                      */
@@ -322,6 +323,7 @@ export default function App() {
   const startCase = (caseId) => {
     const def = CASES[caseId];
     const s = { ...saveRef.current, current: Progress.newCaseState(def) };
+    clearChats(); // kasus baru: riwayat chat AI dimulai dari awal
     commit(beginStory(s, 'briefing'));
     setScreen('story');
     setHighlight(null);
@@ -353,6 +355,7 @@ export default function App() {
       danger: true,
       onConfirm: () => {
         setConfirm(null);
+        clearChats();
         commit({ ...Progress.defaultSave(), settings: saveRef.current.settings });
         setScreen('menu');
         pushToast({ title: 'Progres dihapus', icon: 'Trash2' });

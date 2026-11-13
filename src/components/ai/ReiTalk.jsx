@@ -40,7 +40,7 @@ export default function ReiTalk({ characterId, cs, status, onRecheck, learner })
               <button type="button" className="btn btn-small" onClick={onRecheck}><Icon name="RotateCcw" size={14} /> Cek lagi</button>
             </div>
           ) : (
-            <AiChat idPrefix="rei" botLabel={name} userLabel="Kamu" send={send} disabled={!available} placeholder={`Tanya ${name}…`} intro={`Ajukan pertanyaanmu sendiri ke ${name}. Ia hanya menjawab sesuai yang ia ketahui.`} />
+            <AiChat idPrefix="rei" storageKey={`rei-${characterId}`} botLabel={name} userLabel="Kamu" send={send} disabled={!available} placeholder={`Tanya ${name}…`} intro={`Ajukan pertanyaanmu sendiri ke ${name}. Ia hanya menjawab sesuai yang ia ketahui.`} />
           )}
         </section>
       )}

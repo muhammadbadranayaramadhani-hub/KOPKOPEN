@@ -58,6 +58,7 @@ export default function RenntzyCompanion({ cs, status, onRecheck, learner }) {
           )}
           <AiChat
             idPrefix="renntzy"
+            storageKey="renntzy"
             botLabel="RENNTZY"
             send={send}
             disabled={!available}
