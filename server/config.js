@@ -39,7 +39,7 @@ const int = (v, d, min, max) => {
 export function loadConfig(env = process.env) {
   return {
     port: int(env.PORT, 8787, 1, 65535),
-    host: env.HOST || '127.0.0.1',
+    host: env.HOST || '0.0.0.0',
     apiKey: (env.GEMINI_API_KEY || '').trim(),
     model: (env.GEMINI_MODEL || 'gemini-3.6-flash').trim(),
     thinkingBudget: env.GEMINI_THINKING_BUDGET !== undefined && env.GEMINI_THINKING_BUDGET !== '' ? int(env.GEMINI_THINKING_BUDGET, 0, 0, 24576) : null,
