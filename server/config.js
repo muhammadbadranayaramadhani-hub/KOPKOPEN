@@ -54,7 +54,7 @@ const int = (value, fallback, min, max) => {
 export function loadConfig(env = process.env) {
   return {
     port: int(env.PORT, 8787, 1, 65535),
-    host: env.HOST || '127.0.0.1',
+    host: env.HOST || '0.0.0.0',
 
     apiKey: (env.GROQ_API_KEY || '').trim(),
     model: (env.GROQ_MODEL || 'openai/gpt-oss-20b').trim(),
