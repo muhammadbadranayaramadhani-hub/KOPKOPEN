@@ -1,5 +1,15 @@
 import { AppError } from '../errors.js';
+const RATE_LIMIT_MESSAGES_MINUTE = [
+  'Yah, AI nya masih sibuk. Tunggu sebentar yaa.',
+];
 
+const RATE_LIMIT_MESSAGES_DAILY = [
+  'Yah, AI nya sudah lelah. Coba lagi besok.',
+];
+
+function pickRandomMessage(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
 export function mapGroqError(err, aborted = false) {
   if (err instanceof AppError) return err;
 
@@ -21,10 +31,15 @@ export function mapGroqError(err, aborted = false) {
     );
   }
 
-  if (status === 429 || /rate limit|quota|too many requests/i.test(msg)) {
+ if (status === 429 || /rate limit|quota|too many requests/i.test(msg)) {
+    const isDaily = /per day|tpd|rpd|daily/i.test(msg);
+    const chosenMsg = isDaily
+      ? pickRandomMessage(RATE_LIMIT_MESSAGES_DAILY)
+      : pickRandomMessage(RATE_LIMIT_MESSAGES_MINUTE);
+
     return new AppError(
       'AI_RATE_LIMITED',
-      'Batas penggunaan layanan AI tercapai. Coba lagi sebentar lagi.',
+      chosenMsg,
       429
     );
   }
