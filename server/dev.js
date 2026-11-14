@@ -1,4 +1,5 @@
-import { loadEnvFile, loadConfig } from './config.js';
+import { loadConfig } from './config.js';
+import { loadEnvFile } from './dev-env.js';
 import { createGroq } from './services/groq.js';
 import { createApp } from './create-app.js';
 

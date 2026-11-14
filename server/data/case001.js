@@ -59,40 +59,98 @@ export function evidenceLocationName(evId) {
 // Catatan guru untuk NOPAL per langkah tantangan: konsep & kekeliruan umum, TANPA jawaban akhir.
 export const TUTOR_NOTES = Object.freeze({
   'm1-1': {
-    concepts: ['Selisih dua jumlah dicari dengan pengurangan: jumlah yang lebih besar dikurangi yang lebih kecil.', 'Membaca tabel: cocokkan baris dengan kolom.'],
-    pitfalls: ['Menjumlahkan kedua angka padahal yang ditanya selisih.', 'Menjawab dengan salah satu angka dalam tabel.'],
-    grade: 'VII',
+    concepts: [
+      'Analisis kuantitatif: bedakan nilai aktual, nilai acuan, dan perubahan absolut.',
+      'Perubahan absolut diperoleh dari nilai aktual dikurangi nilai acuan.',
+      'Persentase perubahan dihitung dengan membandingkan perubahan absolut terhadap nilai acuan.',
+      'Pada kasus ini, perubahan absolut 360 liter setara dengan kenaikan 30% dari pemakaian normal 1.200 liter.'
+    ],
+    pitfalls: [
+      'Menganggap nilai aktual sebagai besar kenaikan.',
+      'Menggunakan nilai aktual sebagai penyebut persentase, bukan nilai acuan.',
+      'Mencampuradukkan perubahan absolut dengan perubahan relatif.'
+    ],
+    grade: 'X–XII'
   },
   'm2-1': {
-    concepts: ['Perkalian adalah penjumlahan berulang.', 'Banyak kelompok x isi tiap kelompok = jumlah seluruhnya.'],
-    pitfalls: ['Menjumlahkan banyak sesi dengan liter per sesi.', 'Lupa bahwa ada lebih dari satu sesi.'],
-    grade: 'VII',
+    concepts: [
+      'Pemodelan matematika: total volume merupakan hasil kali frekuensi kegiatan dan volume setiap kegiatan.',
+      'Representasikan informasi dalam model V = n × v.',
+      'Periksa konsistensi satuan sebelum melakukan operasi hitung.'
+    ],
+    pitfalls: [
+      'Menjumlahkan frekuensi dengan volume per kegiatan.',
+      'Menggunakan volume satu sesi sebagai total seluruh sesi.',
+      'Mengabaikan satuan dalam interpretasi hasil.'
+    ],
+    grade: 'X–XII'
   },
   'm2-2': {
-    concepts: ['Membandingkan dua hasil hitungan dari dua sumber berbeda.', 'Dua angka yang sama dari sumber berbeda memperkuat dugaan.'],
-    pitfalls: ['Menganggap angka yang sama sebagai kebetulan.', 'Menyimpulkan ada kebocoran tanpa bukti.'],
-    grade: 'VII',
+    concepts: [
+      'Validasi hipotesis kuantitatif dengan membandingkan hasil dari dua sumber data independen.',
+      'Kesesuaian nilai numerik dapat mendukung suatu penjelasan, tetapi tetap perlu ditinjau bersama bukti kontekstual.',
+      'Bedakan korelasi atau kesesuaian angka dari bukti sebab-akibat.'
+    ],
+    pitfalls: [
+      'Menganggap kesamaan angka sebagai bukti tunggal yang mutlak.',
+      'Menyimpulkan kebocoran tanpa bukti pendukung.',
+      'Mengabaikan kemungkinan penjelasan alternatif yang sesuai dengan data.'
+    ],
+    grade: 'X–XII'
   },
   's1-1': {
-    concepts: ['Siklus air: air tidak hilang dari bumi.', 'Air bersih yang layak dipakai jumlahnya terbatas.'],
-    pitfalls: ['Mengira air hilang selamanya jika dipakai.', 'Mengira menghemat air otomatis menghasilkan listrik.'],
-    grade: 'VII',
+    concepts: [
+      'Siklus hidrologi melibatkan evaporasi, kondensasi, presipitasi, infiltrasi, dan aliran permukaan.',
+      'Air bersirkulasi secara alami, tetapi ketersediaan air tawar yang mudah diakses dan layak digunakan terbatas.',
+      'Pengelolaan sumber daya air perlu mempertimbangkan ketersediaan, kualitas, dan kebutuhan.'
+    ],
+    pitfalls: [
+      'Menganggap seluruh air di bumi tersedia sebagai air bersih siap pakai.',
+      'Menyamakan keberadaan air dengan ketersediaan air tawar.',
+      'Mengabaikan dampak penggunaan berlebihan terhadap sumber air setempat.'
+    ],
+    grade: 'X–XII'
   },
   's1-2': {
-    concepts: ['Penguapan lebih cepat saat suhu tinggi sehingga menyiram pagi/sore lebih hemat.', 'Menutup keran, menampung air hujan, melaporkan kebocoran.'],
-    pitfalls: ['Menyiram saat siang terik.', 'Membiarkan keran menyala saat tidak dipakai.'],
-    grade: 'VII',
+    concepts: [
+      'Evaporasi dipengaruhi oleh suhu, luas permukaan, kelembapan, dan pergerakan udara.',
+      'Penyiraman pagi atau sore dapat mengurangi kehilangan air akibat evaporasi pada kondisi tertentu.',
+      'Konservasi air mencakup pengurangan pemborosan, pemanfaatan air hujan, dan pemeliharaan infrastruktur.'
+    ],
+    pitfalls: [
+      'Menganggap seluruh air yang disiram akan diserap tanaman.',
+      'Mengabaikan pengaruh kondisi lingkungan terhadap evaporasi.',
+      'Menganggap penghematan hanya dilakukan dengan mengurangi frekuensi penyiraman.'
+    ],
+    grade: 'X–XII'
   },
   'i1-1': {
-    concepts: ['Informasi utama adalah hal terpenting yang disampaikan penutur, biasanya jawaban atas apa, siapa, kapan, mengapa.'],
-    pitfalls: ['Memilih detail kecil sebagai informasi utama.', 'Memilih pernyataan yang tidak disebut dalam teks.'],
-    grade: 'VII',
+    concepts: [
+      'Analisis teks: identifikasi gagasan utama, informasi pendukung, dan detail yang tidak relevan.',
+      'Simpulkan isi kesaksian dengan memperhatikan siapa, apa, kapan, dan alasan suatu peristiwa.',
+      'Kesimpulan harus sesuai dengan informasi eksplisit dalam teks dan tidak menambahkan asumsi.'
+    ],
+    pitfalls: [
+      'Menganggap detail menarik sebagai gagasan utama.',
+      'Menambahkan informasi yang tidak dinyatakan oleh narasumber.',
+      'Mengabaikan konteks waktu dan alasan dalam kesaksian.'
+    ],
+    grade: 'X–XII'
   },
   'i1-2': {
-    concepts: ['Fakta yang memberi penjelasan lain melemahkan suatu hipotesis.', 'Tidak semua kalimat dalam kesaksian relevan.'],
-    pitfalls: ['Menganggap semua kalimat mendukung hipotesis.', 'Tidak memisahkan fakta relevan dan tidak relevan.'],
-    grade: 'VII',
-  },
+    concepts: [
+      'Evaluasi hipotesis dilakukan dengan mengelompokkan bukti berdasarkan relevansinya.',
+      'Bukti dapat mendukung, melemahkan, atau tidak berkaitan dengan hipotesis.',
+      'Penjelasan alternatif yang konsisten dengan data dapat melemahkan kebutuhan terhadap hipotesis awal.',
+      'Kekuatan kesimpulan bergantung pada kualitas dan keterkaitan bukti, bukan banyaknya pernyataan.'
+    ],
+    pitfalls: [
+      'Menganggap semua informasi dalam kesaksian relevan.',
+      'Menganggap tidak adanya bukti sebagai bukti mutlak bahwa suatu peristiwa tidak terjadi.',
+      'Tidak membedakan bukti langsung dan informasi yang hanya bersifat kontekstual.'
+    ],
+    grade: 'X–XII'
+  }
 });
 
 // ---------- BAGIAN TERLINDUNGI ----------

@@ -61,8 +61,8 @@ export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}
     system,
     contents = [],
     json = false,
-    temperature = 0.7,
-    maxOutputTokens = 700,
+    temperature = 0.8,
+    maxOutputTokens = 1500,
   }) {
     if (!configured) {
       throw new AppError(
@@ -109,12 +109,19 @@ export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}
         throw new AppError('AI_BAD_REQUEST', 'Pesan untuk AI kosong.', 400);
       }
 
+      console.log('---PAYLOAD KE GROQ---', JSON.stringify(messages, null, 2));
+
       const response = await client.chat.completions.create({
         model: config.model,
         messages,
         temperature,
         max_completion_tokens: maxOutputTokens,
-        ...(json ? { response_format: { type: 'json_object' } } : {}),
+	..(json ? {
+	    response_format: {
+		type: 'json_object'
+		}
+	     } : {})
+	});
       });
 
       const choice = response?.choices?.[0];
