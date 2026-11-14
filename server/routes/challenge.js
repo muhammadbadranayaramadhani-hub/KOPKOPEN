@@ -1,4 +1,3 @@
-
 import { AppError } from '../errors.js';
 import {
   requireBody,
@@ -27,19 +26,26 @@ import { sanitizeLearner, learnerLabels } from '../services/learner.js';
 import { NUMERIC_SUBJECT_IDS, TOPIC_HINTS } from '../../src/data/curriculum.js';
 import { randomUUID } from 'node:crypto';
 
-export function validateChallenge(j, { type }) {
-  const t = oneOf(j.type, ['numeric', 'mc'], 'type');
+export function validateChallenge(j, { type, fallbackTopic = 'Latihan Umum' }) {
+  if (!j || typeof j !== 'object') {
+    throw new AppError('AI_BAD_OUTPUT', 'Format JSON soal tidak valid.', 502);
+  }
+
+  const t = j.type ? oneOf(j.type, ['numeric', 'mc'], 'type') : type;
 
   if (t !== type) {
     throw new AppError('AI_BAD_OUTPUT', 'Jenis soal tidak sesuai permintaan.', 502);
   }
 
+  const rawTopic =
+    typeof j.topic === 'string' && j.topic.trim() ? j.topic.trim() : fallbackTopic;
+
   const out = {
     type: t,
-    topic: strField(j.topic, 'topic', { max: 80 }),
+    topic: strField(rawTopic, 'topic', { max: 80 }),
     question: strField(j.question, 'question', { max: 500, min: 15 }),
-    explanation: strField(j.explanation, 'explanation', { max: 600 }),
-    hint: strField(j.hint, 'hint', { max: 250 })
+    explanation: strField(j.explanation || 'Lihat langkah penyelesaian pada rumus terkait.', 'explanation', { max: 600 }),
+    hint: strField(j.hint || 'Perhatikan informasi yang diketahui pada soal.', 'hint', { max: 250 })
   };
 
   if (t === 'mc') {
@@ -53,32 +59,34 @@ export function validateChallenge(j, { type }) {
       throw new AppError('AI_BAD_OUTPUT', 'Opsi tidak unik.', 502);
     }
 
-    if (!Number.isInteger(j.correctIndex) || j.correctIndex < 0 || j.correctIndex > 3) {
+    const idx = typeof j.correctIndex === 'string' ? Number.parseInt(j.correctIndex, 10) : j.correctIndex;
+    if (!Number.isInteger(idx) || idx < 0 || idx > 3) {
       throw new AppError('AI_BAD_OUTPUT', 'correctIndex tidak valid.', 502);
     }
 
     out.options = options;
-    out.correctIndex = j.correctIndex;
+    out.correctIndex = idx;
   } else {
-    if (typeof j.answer !== 'number' || !Number.isFinite(j.answer)) {
+    const numAns = typeof j.answer === 'string' ? Number(j.answer.trim()) : j.answer;
+    if (typeof numAns !== 'number' || !Number.isFinite(numAns)) {
       throw new AppError('AI_BAD_OUTPUT', 'answer bukan angka.', 502);
     }
 
     let v;
 
     try {
-      v = safeEval(j.expression);
+      v = safeEval(String(j.expression ?? numAns));
     } catch (e) {
       throw new AppError('AI_BAD_OUTPUT', `expression tidak valid (${e.message}).`, 502);
     }
 
-    if (!approxEqual(v, j.answer, 1e-6)) {
+    if (!approxEqual(v, numAns, 1e-6)) {
       throw new AppError('AI_BAD_OUTPUT', 'answer tidak sama dengan hasil expression.', 502);
     }
 
     out.answer = v;
     out.unit = typeof j.unit === 'string' ? j.unit.slice(0, 20) : '';
-    out.expression = j.expression;
+    out.expression = String(j.expression ?? numAns);
   }
 
   const text = [
@@ -166,7 +174,10 @@ export async function runGenerateChallenge(body, { ai }) {
         maxOutputTokens: 1600
       });
 
-      const ch = validateChallenge(parseJsonLoose(text), { type });
+      const ch = validateChallenge(parseJsonLoose(text), {
+        type,
+        fallbackTopic: topic
+      });
 
       if (
         avoid.some(
@@ -234,4 +245,3 @@ export async function runGenerateChallenge(body, { ai }) {
     502
   );
 }
-
