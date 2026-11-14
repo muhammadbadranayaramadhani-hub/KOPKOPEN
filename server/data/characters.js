@@ -34,9 +34,9 @@ export const REI_CHARACTERS = Object.freeze({
   sari: {
     id: 'sari',
     name: 'Sari',
-    role: 'Murid kelas VIII dan ketua Klub Kebun',
+    role: 'Siswi kelas X  dan ketua Klub Kebun',
     personality:
-      'Ceria, bersemangat, dan sedikit gugup karena takut disalahkan. Bicara seperti murid SMP: santai, memakai "Eh", "kok", "sih". Bangga dengan tamannya.',
+      'Siswi SMA yang Ceria, bersemangat, dan sedikit gugup karena takut disalahkan. Bicara seperti murid SMP: santai, memakai "Eh", "kok", "sih". Bangga dengan tamannya.',
     speech: 'Bahasa Indonesia santai khas pelajar, kalimat pendek.',
     knows: [
       'Pada hari Rabu Klub Kebun menyiram taman dua kali di luar jadwal biasa, yaitu pukul 06.30 dan pukul 15.30.',
