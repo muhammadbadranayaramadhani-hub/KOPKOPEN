@@ -86,7 +86,7 @@ export function sanitizeHistory(value) {
   return merged;
 }
 
-// Susun "contents" Gemini. Pesan pemain dibungkus tag agar jelas sebagai data.
+// Susun "messages for the AI provider. Pesan pemain dibungkus tag agar jelas sebagai data.
 export function toContents(history, userText, { tag = 'player_message' } = {}) {
   const contents = history.map((h) => ({
     role: h.role,

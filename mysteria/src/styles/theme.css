@@ -1,0 +1,43 @@
+/* ==========================================================
+   MYSTERIA — Dream Archive design tokens
+   ========================================================== */
+:root {
+  /* Palet utama */
+  --midnight: #22243d;
+  --lavender: #7776a8;
+  --mist: #a9b8df;
+  --dream: #e7ddf5;
+  --paper: #f4eedc;
+  --rose: #c8a9c8;
+  --sage: #91b9b4;
+  --gold: #d9ad75;
+
+  /* Turunan (tetap dari palet, hanya digelapkan / diberi alpha) */
+  --midnight-deep: #15162b;
+  --midnight-soft: #2d3052;
+  --midnight-lift: #383b66;
+  --ink: #22243d; /* teks gelap di atas kertas */
+  --ink-soft: #4a4c72;
+  --line: rgba(169, 184, 223, 0.28);
+  --line-strong: rgba(217, 173, 117, 0.55);
+  --gold-glow: rgba(217, 173, 117, 0.35);
+  --danger: #e3a0a0; /* umpan balik salah — selalu disertai ikon + teks */
+  --danger-ink: #6b2b3a;
+
+  /* Tipografi */
+  --font-title: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-body: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Ukuran */
+  --radius: 3px;
+  --radius-lg: 6px;
+  --tap: 44px;
+  --shadow-soft: 0 10px 30px rgba(10, 10, 30, 0.45);
+  --shadow-paper: 0 6px 18px rgba(10, 10, 30, 0.4);
+  --text-scale: 1;
+}
+
+:root[data-text='large'] {
+  --text-scale: 1.15;
+}
