@@ -2,18 +2,18 @@
   "name": "mysteria-server",
   "private": true,
   "version": "1.0.0",
-  "description": "Backend MYSTERIA: proxy aman ke Google Gemini untuk lima identitas AI.",
+  "description": "Backend MYSTERIA: secure AI proxy using Groq for five AI identities.",
   "type": "module",
   "main": "index.js",
   "engines": {
     "node": ">=18.18"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js"
+    "start": "node dev.js",
+    "dev": "node --watch dev.js"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "openai": "^7.56.0"
+    "groq-sdk": "^1.6.0"
   }
 }
