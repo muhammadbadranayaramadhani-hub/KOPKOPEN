@@ -1,10 +1,13 @@
+
 import { AppError } from '../errors.js';
 
 export function mapGroqError(err, aborted = false) {
   if (err instanceof AppError) return err;
 
   const msg = String(err?.message || err?.statusText || '');
-  const status = Number(err?.status || err?.statusCode || err?.code) || 0;
+  const status = Number(
+    err?.status || err?.statusCode || err?.code
+  ) || 0;
 
   if (
     aborted ||
@@ -12,46 +15,75 @@ export function mapGroqError(err, aborted = false) {
     err?.name === 'APIConnectionTimeoutError' ||
     /aborted|timed? ?out|timeout/i.test(msg)
   ) {
-    return new AppError('AI_TIMEOUT', 'Layanan AI terlalu lama merespons.', 504);
+    return new AppError(
+      'AI_TIMEOUT',
+      'Layanan AI terlalu lama merespons.',
+      504
+    );
   }
 
   if (status === 429 || /rate limit|quota|too many requests/i.test(msg)) {
-    return new AppError('AI_RATE_LIMITED', 'Batas penggunaan layanan AI tercapai. Coba lagi sebentar lagi.', 429);
+    return new AppError(
+      'AI_RATE_LIMITED',
+      'Batas penggunaan layanan AI tercapai. Coba lagi sebentar lagi.',
+      429
+    );
   }
 
   if (status === 401 || status === 403) {
-    return new AppError('AI_AUTH_FAILED', 'Server tidak dapat mengakses Groq (periksa konfigurasi kunci API).', 502);
+    return new AppError(
+      'AI_AUTH_FAILED',
+      'Server tidak dapat mengakses Groq. Periksa konfigurasi kunci API.',
+      502
+    );
   }
 
   if (status === 404) {
-    return new AppError('AI_MODEL_NOT_FOUND', 'Model Groq yang dikonfigurasi tidak tersedia.', 502);
+    return new AppError(
+      'AI_MODEL_NOT_FOUND',
+      'Model Groq yang dikonfigurasi tidak tersedia.',
+      502
+    );
   }
 
   if (status === 400) {
-    return new AppError('AI_BAD_REQUEST', 'Groq menolak format permintaan ini.', 502);
+    return new AppError(
+      'AI_BAD_REQUEST',
+      'Groq menolak format permintaan ini.',
+      502
+    );
   }
 
-  return new AppError('AI_UNAVAILABLE', 'Layanan AI Groq sedang tidak tersedia.', 503);
+  return new AppError(
+    'AI_UNAVAILABLE',
+    'Layanan AI Groq sedang tidak tersedia.',
+    503
+  );
 }
 
-export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}) {
+export function createGroq(
+  config,
+  { sdkLoader = () => import('groq-sdk') } = {}
+) {
   const configured = Boolean(config.apiKey);
   let clientPromise = null;
 
   function getClient() {
     if (!clientPromise) {
-      clientPromise = sdkLoader().then((mod) => {
-        const Groq = mod.default || mod.Groq;
-        return new Groq({
-          apiKey: config.apiKey,
-          timeout: config.timeoutMs,
-          maxRetries: 0,
-        });
-      });
+      clientPromise = sdkLoader()
+        .then((mod) => {
+          const Groq = mod.default || mod.Groq;
 
-      clientPromise.catch(() => {
-        clientPromise = null;
-      });
+          return new Groq({
+            apiKey: config.apiKey,
+            timeout: config.timeoutMs,
+            maxRetries: 0,
+          });
+        })
+        .catch((err) => {
+          clientPromise = null;
+          throw err;
+        });
     }
 
     return clientPromise;
@@ -74,7 +106,6 @@ export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}
 
     try {
       const client = await getClient();
-
       const messages = [];
 
       if (system) {
@@ -87,7 +118,8 @@ export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}
       } else if (json) {
         messages.push({
           role: 'system',
-          content: 'Keluarkan hanya satu objek JSON valid. Jangan gunakan markdown atau code fence.',
+          content:
+            'Keluarkan hanya satu objek JSON valid. Jangan gunakan markdown atau code fence.',
         });
       }
 
@@ -106,23 +138,28 @@ export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}
       }
 
       if (!messages.length) {
-        throw new AppError('AI_BAD_REQUEST', 'Pesan untuk AI kosong.', 400);
+        throw new AppError(
+          'AI_BAD_REQUEST',
+          'Pesan untuk AI kosong.',
+          400
+        );
       }
 
-      console.log('---PAYLOAD KE GROQ---', JSON.stringify(messages, null, 2));
-
-      const response = await client.chat.completions.create({
+      const request = {
         model: config.model,
         messages,
         temperature,
         max_completion_tokens: maxOutputTokens,
-	..(json ? {
-	    response_format: {
-		type: 'json_object'
-		}
-	     } : {})
-	});
-      });
+        ...(json
+          ? {
+              response_format: {
+                type: 'json_object',
+              },
+            }
+          : {}),
+      };
+
+      const response = await client.chat.completions.create(request);
 
       const choice = response?.choices?.[0];
       const text = choice?.message?.content;
@@ -145,13 +182,17 @@ export function createGroq(config, { sdkLoader = () => import('groq-sdk') } = {}
         );
       }
 
-      return { text: text.trim() };
+      return {
+        text: text.trim(),
+      };
     } catch (err) {
       const mapped = mapGroqError(err);
 
       if (!(err instanceof AppError)) {
         console.error(
-          `[groq] ${mapped.code} (${err?.name}: ${String(err?.message || '').slice(0, 160)})`
+          `[groq] ${mapped.code} (${err?.name}: ${String(
+            err?.message || ''
+          ).slice(0, 160)})`
         );
       }
 
