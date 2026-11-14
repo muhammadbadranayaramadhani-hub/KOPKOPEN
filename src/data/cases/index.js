@@ -1,27 +1,18 @@
 import { theLastDrop } from './theLastDrop.js';
+import { kodeDiBalikLonceng } from './KodeDiBalikLonceng.js';
+import { petaYangHilang } from './petaYangHilang.js';
 
-// Kasus yang bisa dimainkan. Tambahkan kasus baru di sini.
 export const CASES = {
   [theLastDrop.id]: theLastDrop,
+  [kodeDiBalikLonceng.id]: kodeDiBalikLonceng,
+  [petaYangHilang.id]: petaYangHilang,
 };
 
-// Daftar tampilan Arsip Kasus, termasuk map yang masih terkunci (teaser).
+// requires: ID kasus sebelumnya yang harus berstatus 'completed'
 export const CASE_LIST = [
-  { id: theLastDrop.id, playable: true },
-  {
-    id: 'MYS-002',
-    playable: false,
-    title: 'Kode di Balik Lonceng',
-    tagline: 'Lonceng akademi berbunyi pada jam yang salah.',
-    subjects: ['Matematika', 'IPS'],
-  },
-  {
-    id: 'MYS-003',
-    playable: false,
-    title: 'Peta yang Hilang',
-    tagline: 'Sebuah peta lama lenyap dari ruang arsip.',
-    subjects: ['IPS', 'Bahasa Indonesia'],
-  },
+  { id: theLastDrop.id, playable: true, requires: null },
+  { id: kodeDiBalikLonceng.id, playable: true, requires: 'MYS-001' },
+  { id: petaYangHilang.id, playable: true, requires: 'MYS-002' },
 ];
 
 export function getCase(id) {

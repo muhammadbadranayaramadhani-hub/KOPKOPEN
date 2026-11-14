@@ -28,18 +28,28 @@ export default function CaseArchive({ save, points, rank, highlight, onBack, onS
               </div>
             )}
             {CASE_LIST.map((entry) => {
-              if (!entry.playable) {
+              const c = CASES[entry.id];
+              const prevDone = !entry.requires || (save.profile.cases[entry.requires] && save.profile.cases[entry.requires].status === 'completed');
+
+              if (!entry.playable || !c || !prevDone) {
+                const title = c ? c.title : entry.title;
+                const tagline = c ? c.tagline : entry.tagline;
+                const subjects = c ? c.subjects : entry.subjects;
                 return (
-                  <article key={entry.id} className="case-card is-locked" aria-label={`${entry.title}, terkunci`}>
+                  <article key={entry.id} className="case-card is-locked" aria-label={`${title}, terkunci`}>
                     <p className="case-id">{entry.id}</p>
-                    <h2 className="case-title"><Icon name="Lock" size={18} /> {entry.title}</h2>
-                    <p>{entry.tagline}</p>
-                    <p className="muted">Map ini masih tersegel. Selesaikan kasus sebelumnya untuk membukanya nanti.</p>
-                    <p className="chips">{entry.subjects.map((s) => <span key={s} className="chip">{s}</span>)}</p>
+                    <h2 className="case-title"><Icon name="Lock" size={18} /> {title}</h2>
+                    <p>{tagline}</p>
+                    <p className="muted">
+                      {entry.requires
+                        ? `Map ini masih tersegel. Selesaikan kasus ${entry.requires} terlebih dahulu untuk membukanya.`
+                        : 'Map ini masih tersegel. Selesaikan kasus sebelumnya untuk membukanya nanti.'}
+                    </p>
+                    <p className="chips">{subjects.map((s) => <span key={s} className="chip">{s}</span>)}</p>
                   </article>
                 );
               }
-              const c = CASES[entry.id];
+
               const status = caseStatus(save, c.id);
               const rec = save.profile.cases[c.id];
               return (

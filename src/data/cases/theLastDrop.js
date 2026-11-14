@@ -1,5 +1,5 @@
 // =====================================================================
-// KASUS MYS-001 — THE LAST DROP
+// KASUS MYS-001 — THE LAST DROP (JENJANG SMA)
 // Seluruh konten kasus ada di file ini; logika permainan ada di /engines.
 //
 // DATA ANGKA (harus selalu konsisten):
@@ -17,7 +17,7 @@ export const theLastDrop = {
   tagline: 'Air akademi naik tiba-tiba. Ke mana perginya?',
   difficulty: 'Pemula',
   duration: '10–15 menit',
-  subjects: ['Matematika', 'IPA', 'Bahasa Indonesia'],
+  subjects: ['Matematika', 'Biologi', 'Bahasa Indonesia'],
   place: 'Taman Akademi & Ruang Perawatan',
   synopsis:
     'Pemakaian air akademi naik tajam padahal jumlah murid dan kegiatan sekolah tidak berubah. Petugas curiga ada kebocoran. Tugasmu: cari buktinya — tetapi tidak semuanya seperti yang terlihat.',
@@ -61,7 +61,7 @@ export const theLastDrop = {
           x: 27,
           y: 71,
           description:
-            'Sari, murid kelas VIII sekaligus ketua Klub Kebun. Ia sedang menggulung poster dengan gambar bunga.',
+            'Sari, siswa SMA sekaligus ketua Klub Kebun. Ia sedang menggulung poster dengan gambar bunga.',
           requires: { collected: ['E3'] },
           lockText:
             'Sari sedang sibuk menata poster Klub Kebun. Kamu belum punya bahan pertanyaan yang kuat. Mungkin periksa Taman Akademi dulu.',
@@ -725,104 +725,71 @@ export const theLastDrop = {
     },
     {
       id: 's1',
-      subject: 'ipa',
-      title: 'Air dan Kita',
+      subject: 'biologi',
+      title: 'Transpirasi & Siklus Air',
       icon: 'FlaskConical',
       unlock: { collected: ['E3'] },
       lockText: 'Temukan jadwal penyiraman di Taman Akademi.',
       scenario:
-        'Walaupun bukan kebocoran, 360 liter air tambahan tetap layak dipikirkan. Pak Darmo ingin tahu bagaimana sekolah bisa lebih bijak memakai air.',
+        'Walaupun bukan kebocoran, 360 liter air tambahan tetap perlu dikelola secara ekologis. Pak Darmo ingin tahu alasan biologis di balik pemilihan waktu penyiraman tanaman.',
       evidenceRef: 'E3',
       steps: [
         {
           id: 's1-1',
           type: 'mc',
-          prompt: 'Mengapa air bersih perlu digunakan dengan bijak, termasuk untuk menyiram taman?',
+          prompt: 'Mengapa ketersediaan air tawar bersih perlu dijaga meskipun volume total air di Bumi tetap dalam siklus hidrologi?',
           options: [
             {
               id: 'a',
-              text: 'Karena air di bumi akan lenyap seluruhnya jika dipakai.',
+              text: 'Karena molekul air akan musnah setelah diserap akar tumbuhan.',
               correct: false,
-              why: 'Air tidak lenyap; air berputar dalam siklus air. Masalahnya, air bersih yang layak dipakai jumlahnya terbatas.',
+              why: 'Air dilepaskan kembali ke atmosfer melalui transpirasi, tidak musnah.',
             },
             {
               id: 'b',
-              text: 'Karena air bersih yang layak dipakai jumlahnya terbatas, sedangkan kebutuhan manusia terus ada.',
+              text: 'Karena sebagian besar air di Bumi berupa air asin, sedangkan air tawar yang layak pakai jumlahnya sangat terbatas dan butuh waktu pemulihan.',
               correct: true,
               why: '',
             },
             {
               id: 'c',
-              text: 'Karena air yang dihemat bisa langsung diubah menjadi listrik.',
+              text: 'Karena air tanah tidak pernah terhubung dengan siklus presipitasi.',
               correct: false,
-              why: 'Air yang dihemat tidak otomatis menjadi listrik. Alasan menghemat air berkaitan dengan persediaan air bersih.',
+              why: 'Air tanah terisi kembali melalui infiltrasi air hujan.',
             },
             {
               id: 'd',
-              text: 'Karena tanaman lebih suka tanah yang selalu kering.',
+              text: 'Karena tanaman tidak membutuhkan air untuk fotosintesis.',
               correct: false,
-              why: 'Tanaman membutuhkan air. Yang perlu diatur adalah jumlah dan waktunya agar tidak terbuang.',
+              why: 'Air adalah bahan baku utama reaksi terang fotosintesis.',
             },
           ],
           hints: [
-            'Pikirkan siklus air: air tidak hilang dari bumi. Lalu apa yang terbatas?',
-            'Tidak semua air di bumi bisa langsung diminum atau dipakai manusia.',
-            'Cari pilihan yang berbicara tentang persediaan air bersih yang layak pakai.',
+            'Ingat komposisi perairan Bumi: lebih dari 97% berada di lautan.',
+            'Fokus pada keterbatasan proporsi air tawar yang siap digunakan.',
           ],
           explain:
-            'Air di bumi berputar melalui siklus air, tetapi air bersih yang layak dipakai manusia jumlahnya terbatas. Karena itu pemakaian yang berlebihan dapat membuat persediaan menipis.',
-          link: 'Dua sesi siram tambahan itu wajar untuk lomba, tetapi tetap harus dilakukan dengan bijak.',
+            'Dalam siklus hidrologi, volume total air memang tetap, tetapi lebih dari 97% merupakan air laut yang asin. Persediaan air tawar bersih yang layak konsumsi sangat terbatas.',
+          link: 'Pemilihan waktu penyiraman juga memengaruhi efisiensi penyerapan air oleh tanaman.',
         },
         {
           id: 's1-2',
           type: 'multi',
-          prompt: 'Pilih SEMUA cara sederhana untuk menghemat air di sekolah.',
+          prompt: 'Pilih SEMUA langkah konservasi air yang efektif diterapkan di lingkungan sekolah.',
           options: [
-            {
-              id: 'a',
-              text: 'Menutup keran rapat-rapat setelah dipakai',
-              correct: true,
-              why: '',
-            },
-            {
-              id: 'b',
-              text: 'Menyiram tanaman pada pagi atau sore hari',
-              correct: true,
-              why: '',
-            },
-            {
-              id: 'c',
-              text: 'Menampung air hujan untuk menyiram tanaman',
-              correct: true,
-              why: '',
-            },
-            {
-              id: 'd',
-              text: 'Segera melaporkan keran atau pipa yang bocor',
-              correct: true,
-              why: '',
-            },
-            {
-              id: 'e',
-              text: 'Membiarkan keran menyala terus saat menyabuni tangan',
-              correct: false,
-              why: 'Keran yang dibiarkan menyala membuang banyak air. Tutup keran saat menyabuni tangan.',
-            },
-            {
-              id: 'f',
-              text: 'Menyiram tanaman pada siang terik agar cepat kering',
-              correct: false,
-              why: 'Saat terik, sebagian air menguap sebelum diserap tanah. Pagi atau sore hari lebih hemat.',
-            },
+            { id: 'a', text: 'Menutup keran rapat-rapat setelah digunakan', correct: true, why: '' },
+            { id: 'b', text: 'Menyiram tanaman pada pagi atau sore hari untuk menekan laju evaporasi dan transpirasi berlebih', correct: true, why: '' },
+            { id: 'c', text: 'Membuat sumur resapan dan menampung air hujan untuk irigasi taman', correct: true, why: '' },
+            { id: 'd', text: 'Segera memperbaiki kebocoran pipa atau keran', correct: true, why: '' },
+            { id: 'e', text: 'Membiarkan keran mengalir terus saat mencuci alat laboratorium', correct: false, why: 'Air bersih terbuang sia-sia tanpa dimanfaatkan.' },
+            { id: 'f', text: 'Menyiram tanaman pada tengah hari terik agar air cepat menguap', correct: false, why: 'Intensitas cahaya dan suhu tinggi mempercepat penguapan sebelum air diserap akar.' },
           ],
           hints: [
-            'Ada empat cara yang benar. Cari yang mengurangi air terbuang.',
-            'Ingat penguapan: air lebih cepat menguap saat matahari terik.',
-            'Cara yang benar semuanya mencegah air terbuang sia-sia atau memanfaatkan air yang sudah ada.',
+            'Ada empat pilihan yang benar. Perhatikan hubungan suhu siang hari dengan laju penguapan.',
           ],
           explain:
-            'Menutup keran, menyiram saat suhu rendah (pagi/sore), menampung air hujan, dan melaporkan kebocoran adalah cara menghemat air. Menyiram saat terik membuat air lebih banyak menguap.',
-          link: 'Klub Kebun memilih sesi pukul 06.30 dan 15.30. Itu waktu yang bagus karena penguapan lebih sedikit.',
+            'Menyiram pada pagi/sore hari mengurangi kehilangan air akibat evaporasi dan transpirasi tinggi saat terik, sementara penampungan air hujan menjaga cadangan air tanah.',
+          link: 'Jadwal Klub Kebun pukul 06.30 dan 15.30 sudah tepat secara biologis karena suhu udara lebih rendah.',
         },
       ],
     },
@@ -1284,7 +1251,6 @@ export const theLastDrop = {
 
   // ------------------------------------------------------------------
   // TUJUAN PENYELIDIKAN
-  // done / available memakai bahasa syarat yang sama dengan hotspot.
   // ------------------------------------------------------------------
   objectives: [
     { id: 'o1', text: 'Temukan Catatan Pemakaian Harian', where: 'Ruang Perawatan', done: { collected: ['E1'] } },
@@ -1294,7 +1260,7 @@ export const theLastDrop = {
     { id: 'o5', text: 'Selidiki taman dan temukan jadwal siram', where: 'Taman Akademi', done: { collected: ['E3'] }, available: { solved: ['m1'] } },
     { id: 'o6', text: 'Wawancarai Sari tentang penyiraman', where: 'Lorong Akademi', done: { collected: ['E5'] }, available: { collected: ['E3'] } },
     { id: 'o7', text: 'Selesaikan tantangan: Tafsirkan Bukti', where: 'Tantangan', done: { solved: ['m2'] }, available: { collected: ['E3'] } },
-    { id: 'o8', text: 'Selesaikan tantangan IPA: Air dan Kita', where: 'Tantangan', done: { solved: ['s1'] }, available: { collected: ['E3'] } },
+    { id: 'o8', text: 'Selesaikan tantangan Biologi: Transpirasi & Siklus Air', where: 'Tantangan', done: { solved: ['s1'] }, available: { collected: ['E3'] } },
     { id: 'o9', text: 'Selesaikan tantangan: Membaca Kesaksian', where: 'Tantangan', done: { solved: ['i1'] }, available: { collected: ['E5'] } },
     { id: 'o10', text: 'Buktikan 4 hubungan inti di Papan Bukti', where: 'Papan Bukti', done: { connections: 4 }, available: { collected: ['E1', 'E2'] } },
     { id: 'o11', text: 'Susun kesimpulan akhir kasus', where: 'Kesimpulan', done: { finalSolved: true }, available: { ready: true } },
@@ -1353,7 +1319,7 @@ export const theLastDrop = {
   concepts: [
     { subject: 'Matematika', icon: 'Calculator', text: 'Selisih (pengurangan) untuk mengetahui seberapa besar suatu jumlah bertambah: 1.560 − 1.200 = 360.' },
     { subject: 'Matematika', icon: 'Calculator', text: 'Perkalian sebagai penjumlahan berulang: 2 × 180 = 180 + 180 = 360.' },
-    { subject: 'IPA', icon: 'FlaskConical', text: 'Air bersih yang layak pakai terbatas; hemat air dengan menyiram saat pagi/sore, menutup keran, dan melaporkan kebocoran.' },
+    { subject: 'Biologi', icon: 'FlaskConical', text: 'Air tawar bersih sangat terbatas; hemat air dengan menyiram saat pagi/sore untuk menekan laju evaporasi dan transpirasi.' },
     { subject: 'Bahasa Indonesia', icon: 'BookText', text: 'Menemukan informasi utama dan memilah fakta yang mendukung, melemahkan, atau tidak berkaitan dengan suatu dugaan.' },
     { subject: 'Penalaran', icon: 'Brain', text: 'Menguji hipotesis dengan bukti: dua sumber yang saling cocok membuat kesimpulan lebih kuat, dan dugaan lain bisa disingkirkan.' },
   ],

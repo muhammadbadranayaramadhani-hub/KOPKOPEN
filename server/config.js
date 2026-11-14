@@ -37,13 +37,13 @@ const int = (v, d, min, max) => {
 };
 
 export function loadConfig(env = process.env) {
+  const effort = (env.GROQ_REASONING_EFFORT || '').trim().toLowerCase();
   return {
     port: int(env.PORT, 8787, 1, 65535),
     host: env.HOST || '127.0.0.1',
-    apiKey: (env.GEMINI_API_KEY || '').trim(),
-    model: (env.GEMINI_MODEL || 'gemini-3.6-flash').trim(),
-    thinkingBudget: env.GEMINI_THINKING_BUDGET !== undefined && env.GEMINI_THINKING_BUDGET !== '' ? int(env.GEMINI_THINKING_BUDGET, 0, 0, 24576) : null,
-    thinkingLevel: ['minimal', 'low', 'medium', 'high', 'off'].includes((env.GEMINI_THINKING_LEVEL || '').trim().toLowerCase()) ? env.GEMINI_THINKING_LEVEL.trim().toLowerCase() : null,
+    apiKey: (env.GROQ_API_KEY || '').trim(),
+    model: (env.GROQ_MODEL || 'llama-3.3-70b-versatile').trim(),
+    reasoningEffort: ['none', 'low', 'medium', 'high'].includes(effort) ? effort : null,
     timeoutMs: int(env.AI_TIMEOUT_MS, 25000, 3000, 120000),
     rateLimitPerMin: int(env.RATE_LIMIT_PER_MIN, 30, 1, 1000),
     rateLimitHeavyPerMin: int(env.RATE_LIMIT_HEAVY_PER_MIN, 8, 1, 500),
@@ -51,3 +51,4 @@ export function loadConfig(env = process.env) {
     trustProxy: env.TRUST_PROXY === '1' || env.TRUST_PROXY === 'true',
   };
 }
+

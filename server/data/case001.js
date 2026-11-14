@@ -26,13 +26,19 @@ export const OFFICIAL_BIG_NUMBERS = Object.freeze([1200, 1560, 360, 180, 420]);
 export function verifyFacts() {
   const inc = FACTS.investigationDay - FACTS.normal;
   const sessions = FACTS.extraSessions * FACTS.litersPerSession;
-  if (inc !== FACTS.increase) throw new Error(`Fakta tidak konsisten: ${FACTS.investigationDay} - ${FACTS.normal} = ${inc}, bukan ${FACTS.increase}`);
-  if (sessions !== FACTS.increase) throw new Error(`Fakta tidak konsisten: ${FACTS.extraSessions} x ${FACTS.litersPerSession} = ${sessions}`);
+  if (inc !== FACTS.increase) {
+    throw new Error(`Fakta tidak konsisten: ${FACTS.investigationDay} - ${FACTS.normal} = ${inc}, bukan ${FACTS.increase}`);
+  }
+  if (sessions !== FACTS.increase) {
+    throw new Error(`Fakta tidak konsisten: ${FACTS.extraSessions} x ${FACTS.litersPerSession} = ${sessions}`);
+  }
   const nf = C.resolution.numberFill;
   if (nf.increase !== FACTS.increase || nf.sessions !== FACTS.extraSessions || nf.perSession !== FACTS.litersPerSession) {
     throw new Error('Data frontend (numberFill) tidak cocok dengan fakta resmi server.');
   }
-  if (C.challenges[0].steps[0].answer !== FACTS.increase) throw new Error('Jawaban tantangan m1 tidak cocok dengan fakta resmi.');
+  if (C.challenges[0].steps[0].answer !== FACTS.increase) {
+    throw new Error('Jawaban tantangan m1 tidak cocok dengan fakta resmi.');
+  }
   return true;
 }
 verifyFacts();
