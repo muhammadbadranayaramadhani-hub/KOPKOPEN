@@ -119,7 +119,7 @@ export const INTRO_SCRIPT = {
       bg: 'archive',
       speaker: 'nara',
       expr: 'thinking',
-      text: 'Matematika, IPA, bahasa — semuanya adalah alat penyelidikmu. Bukan pelajaran terpisah, melainkan kunci untuk membuka misteri.',
+      text: 'Setiap bidang ilmu yang kamu pelajari di bangku sekolah — dari hitungan eksakta, fenomena alam, dinamika sosial, hingga ketajaman bahasa — semuanya adalah alat penyelidikmu. Bukan pelajaran terpisah, melainkan kunci untuk untuk membuka misteri.',
       next: 'n12',
     },
     n12: {
