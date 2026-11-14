@@ -1,0 +1,6 @@
+{
+  "name": "MYSTERIA: The Academy of Hidden Knowledge",
+  "description": "Visual novel misteri edukatif interaktif untuk siswa SMP. Selidiki kasus aneh, kumpulkan bukti, pecahkan tantangan logika & sains, dan temukan kebenaran di balik misteri akademi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
