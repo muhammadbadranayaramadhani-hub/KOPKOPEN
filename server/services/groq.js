@@ -1,4 +1,3 @@
-
 import { AppError } from '../errors.js';
 
 export function mapGroqError(err, aborted = false) {
@@ -49,7 +48,7 @@ export function mapGroqError(err, aborted = false) {
   if (status === 400) {
     return new AppError(
       'AI_BAD_REQUEST',
-      'Groq menolak format permintaan ini.',
+      `Groq menolak format permintaan ini. (${msg.slice(0, 120)})`,
       502
     );
   }
@@ -108,18 +107,18 @@ export function createGroq(
       const client = await getClient();
       const messages = [];
 
+      const jsonRule =
+        '\n\nFORMAT OUTPUT WAJIB: keluarkan hanya satu objek JSON valid tanpa teks pengantar, tanpa penjelasan tambahan di luar JSON, dan tanpa blok markdown ```json.';
+
       if (system) {
         messages.push({
           role: 'system',
-          content: json
-            ? `${system}\n\nFORMAT OUTPUT WAJIB: keluarkan hanya satu objek JSON valid. Jangan gunakan markdown atau code fence.`
-            : system,
+          content: json ? `${system}${jsonRule}` : system,
         });
       } else if (json) {
         messages.push({
           role: 'system',
-          content:
-            'Keluarkan hanya satu objek JSON valid. Jangan gunakan markdown atau code fence.',
+          content: jsonRule.trim(),
         });
       }
 
@@ -150,13 +149,6 @@ export function createGroq(
         messages,
         temperature,
         max_completion_tokens: maxOutputTokens,
-        ...(json
-          ? {
-              response_format: {
-                type: 'json_object',
-              },
-            }
-          : {}),
       };
 
       const response = await client.chat.completions.create(request);
